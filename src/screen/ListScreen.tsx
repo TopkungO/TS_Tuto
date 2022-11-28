@@ -7,7 +7,7 @@ type Props = TaskProps & {};
 
 
 
-const ListScreen: React.FC<Props> = ({ task,setTask}) => {
+const ListScreen: React.FC<Props> = ({ addTask, task, setTask, updateTaskComplete }) => {
 
   const [newTask, setNewTask] = useState("")
 
@@ -16,11 +16,13 @@ const ListScreen: React.FC<Props> = ({ task,setTask}) => {
   }
   const handlePress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && newTask !== "") {
-      setTask((task) => [...task, { id: nanoid(), label: newTask, isComplete: false }]);
+      addTask( { label: newTask } )
       setNewTask("")
     }
   }
   const handleCompleteChange = (handletask: Task) => (e: ChangeEvent<HTMLInputElement>) => {
+    updateTaskComplete(handletask.id,e.target.checked)
+    
     setTask((tasks) =>
       tasks.map(task => {
         if (task.id === handletask.id)
@@ -29,15 +31,14 @@ const ListScreen: React.FC<Props> = ({ task,setTask}) => {
 
       })
     )
-
   }
+  
   const handleClearClick = () => {
     setTask(tasks => tasks.filter(task => !task.isComplete))
   }
   const handleTaskDelete = (handleTasks: Task) => ()=>{
     setTask(tasks=> tasks.filter((task)=>task.id !== handleTasks.id))
   }
-  console.log(task);
 
 
   return (

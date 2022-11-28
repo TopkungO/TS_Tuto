@@ -1,13 +1,24 @@
 import React from 'react'
 import { TaskProps } from '../types'
 
-type Props =TaskProps & {}
+type Props = TaskProps & {}
 
-const FocusScreen:React.FC<Props> = ({task}) => {
-    const tas =task[0]
+const FocusScreen: React.FC<Props> = ({ focusedTask: task, shuffleFocusedTask, updateTaskComplete }) => {
 
 
-  return tas ? <div>{tas.label}</div> :<div>No task.</div>
+  const handleMarkCompleted =()=>{
+    if(task) updateTaskComplete(task.id,true)
+  }
+
+
+  return task ? (
+      <div>
+        <div>{task.label}</div>
+        <button onClick={handleMarkCompleted}>mark complete</button>
+      <button onClick={shuffleFocusedTask}>nope</button>
+      </div>
+    ) : (
+    <div>No in complete task.</div>)
 }
 
 export default FocusScreen
